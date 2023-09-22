@@ -1,5 +1,7 @@
 package com.av.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,5 +28,12 @@ public class ShipmentTypeController {
 		String msg = "Shipment saved with id: "+id;
 		model.addAttribute("msg",msg);
 		return "home";
+	}
+	
+	@GetMapping("/getAll")
+	public String getAllShipmentTypes(Model model) {
+		List<ShipmentType> list = service.getAllShipmentTypes();
+		model.addAttribute("list",list);
+		return "show";
 	}
 }
