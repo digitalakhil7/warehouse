@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1>ShipmentType Register Page</h1>
+        </div>
+    </div>
+    <div class="card-body">
+        <h4 id="error" style="text-align: center;"></h4>
+        <form th:action="@{/update}" method="post" id="submitShipmentType" th:object="${st}">
+			Id: <input type="text" th:field="*{shipId}" class="form-control" readonly>
+            Shipment Mode: <select th:field="*{shipMode}" class="form-control">
+                <option value="">--Select--</option>
+                <option value="air">Air</option>
+                <option value="truck">Truck</option>
+                <option value="ship">Ship</option>
+                <option value="train">Train</option>
+            </select>
+            Shipment Code: <input type="text" th:field="*{shipCode}" class="form-control">
+            Enable Shipment: <input type="radio" th:field="*{enableShip}" value="Yes"> Yes
+            <input type="radio" th:field="*{enableShip}" value="No"> No <br>
+            Shipment Grade: <input type="radio" th:field="*{shipGrade}" value="A"> A
+            <input type="radio" th:field="*{shipGrade}" value="B"> B
+            <input type="radio" th:field="*{shipGrade}" value="C"> C <br>
+            Desciption: <textarea th:field="*{shipDesc}" cols="50" rows="3"></textarea><br>
+            <input type="submit" value="Update" class="btn btn-success">
+        </form>
+    </div>
+    <div class="card-footer" th:if="${msg!=null}">
+        <p th:text="${msg}"></p>
+    </div>
+<script>
+    $(document).ready(()=>{
+        $("#error").hide();
+        $("#error").css('color','red')
+        $("#submitShipmentType").submit(()=>{
+            var shipMode = $("#shipMode").val();
+            var shipCode = $("#shipCode").val();
+            var enableShip = $("#enableShip").val();
+            var shipGrade = $("#shipGrade").val();
+            var shipDesc = $("#shipDesc").val();
+
+            if(shipMode == ''){
+                $("#error").show();
+                $("#error").html('Please select Shipment Mode');
+                return false;
+            }
+            if(shipCode == ''){
+                $("#error").show();
+                $("#error").html('Please select Shipment Code');
+                return false;
+            }
+
+            var len = $('[name="enableShip"]:checked').length;
+            if(len == 0){
+                $("#error").show();
+                $("#error").html('Please select Enable Shipment as Yes or No');
+                return false; 
+            }
+
+            var lenGrade = $('[name="shipGrade"]:checked').length;
+            if(lenGrade == 0){
+                $("#error").show();
+                $("#error").html('Please select Shipment Grade');
+                return false; 
+            }
+            if(shipDesc == ''){
+                $("#error").show();
+                $("#error").html('Please enter description');
+                return false;
+            }
+            return true;
+        })
+    })
+</script>
+</div>
+</body>
+</html>

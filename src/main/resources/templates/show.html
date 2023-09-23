@@ -19,13 +19,14 @@
     </div>
     <div class="card-body">
         <table class="table">
-            <tr>
-                    <th>Id</th>
+            <tr class="bg-info">
+                    <th clas>Id</th>
                     <th>Mode</th>
                     <th>Code</th>
                     <th>Enabled</th>
                     <th>Grade</th>
                     <th>Desc</th>
+                    <th>Operations</th>
             </tr>
             <tr th:each="st : ${list}">
                 <td th:text="${st.shipId}"></td>
@@ -34,6 +35,10 @@
                 <td th:text="${st.enableShip}"></td>
                 <td th:text="${st.shipGrade}"></td>
                 <td th:text="${st.shipDesc}"></td>
+                <td>
+					<a th:href="@{'getOne?id='+${st.shipId}}" class="btn btn-warning">Edit</a> |
+					<a th:href="@{'deleteOne?id='+${st.shipId}}"  class="btn btn-danger">Delete</a>
+				</td>
             </tr>             
         </table>
     </div>
