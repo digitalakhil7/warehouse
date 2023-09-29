@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.av.exception.ShipmentTypeNotFoundException;
 import com.av.model.ShipmentType;
 import com.av.repo.ShipmentTypeRepo;
 import com.av.service.ShipmentTypeService;
@@ -25,20 +26,25 @@ public class ShipmentTypeServiceImpl implements ShipmentTypeService {
 	
 	@Override
 	public Integer deleteOneShipmenetType(Integer id) {
-		if(id!=null) {
-			repo.deleteById(id);
-		}
+		repo.delete(getOneShipmentType(id));
 		return id;
 	}
-	
+
+	/* Before Java 8
 	@Override
 	public ShipmentType getOneShipmentType(Integer id) {
 		Optional<ShipmentType> opt = repo.findById(id);
-		ShipmentType st = null;
-		if(opt.isPresent()) {
-			st = opt.get();
+		if(opt.isEmpty()) {
+			throw new ShipmentTypeNotFoundException("Shipment Not found");
 		}
-		return st;
+		else {
+			return opt.get();
+		}
+	}
+	*/
+	@Override
+	public ShipmentType getOneShipmentType(Integer id) {
+		return repo.findById(id).orElseThrow(()-> new ShipmentTypeNotFoundException("ShipmentType: "+id+"  Not found Custom Exception"));
 	}
 	
 	@Override
